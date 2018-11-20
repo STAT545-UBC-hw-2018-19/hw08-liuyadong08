@@ -3,6 +3,8 @@ library(ggplot2)
 library(dplyr)
 library(DT)
 library(rsconnect)
+library(shinyjs)
+library(colourpicker)
 
 bcl <- read.csv("bcl-data.csv", stringsAsFactors = FALSE)
 
@@ -10,10 +12,10 @@ ui <- fluidPage(
   titlePanel("BC Liquor Store prices"),
   sidebarLayout(
     sidebarPanel(
-      sliderInput("priceInput", "Price", 0, 100, c(25, 40), pre = "$"),
-      radioButtons("typeInput", "Product type",
+      sliderInput("priceInput", "Price", 0, 100, c(15, 40), pre = "$"),
+      selectInput("typeInput", "Product type", multiple = TRUE,
                   choices = c("BEER", "REFRESHMENT", "SPIRITS", "WINE"),
-                  selected = "WINE"),
+                  selected = c("WINE", "BEER")),
       selectInput("countryInput", "Country",
                   sort(unique(bcl$Country)),
                   selected = "FRANCE"),
@@ -24,8 +26,10 @@ ui <- fluidPage(
       #uiOutput("countryOutput")
     ),
     mainPanel(
+      "A histogram shows number of liquor af different alcohol content", 
       plotOutput("coolplot"),
       br(), br(),
+      uiOutput('myPanel'),
       dataTableOutput("results")
     )
   )
@@ -37,7 +41,6 @@ server <- function(input, output) {
     #            sort(unique(bcl$Country)),
      #           selected = "CANADA")
   #})  
-  
   filtered <- reactive({
     if (is.null(input$countryInput)) {
       return(NULL)
@@ -46,7 +49,7 @@ server <- function(input, output) {
     bcl %>%
       filter(Price >= input$priceInput[1],
              Price <= input$priceInput[2],
-             Type == input$typeInput,
+             Type %in% input$typeInput,
              Country == input$countryInput
       )
   })
@@ -55,8 +58,8 @@ server <- function(input, output) {
     if (is.null(filtered())) {
       return()
     }
-    ggplot(filtered(), aes(Alcohol_Content)) +
-      geom_histogram()
+    ggplot(filtered(), aes(x = Alcohol_Content, fill = Type)) +
+      geom_histogram() 
   })
 
   output$results <- renderDataTable({
