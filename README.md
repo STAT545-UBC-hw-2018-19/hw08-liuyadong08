@@ -13,6 +13,5 @@ I changes the radioButtons of "typeInput" as a selectInput and set the multiple 
 ## Code and data source
 The original code and data are from [Dean Attali's tutorial](https://deanattali.com/blog/building-shiny-apps-tutorial). The code can specifically be found [here](https://deanattali.com/blog/building-shiny-apps-tutorial/#12-final-shiny-app-code).
 
-The modified code and the bcl data can also be found in this repository
-
+The modified code and the bcl data can also be found in this repository.
 
