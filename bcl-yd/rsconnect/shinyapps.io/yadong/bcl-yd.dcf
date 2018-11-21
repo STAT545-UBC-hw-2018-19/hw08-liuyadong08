@@ -5,6 +5,8 @@ account: yadong
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 578931
-bundleId: 1707755
+bundleId: 1711567
 url: https://yadong.shinyapps.io/bcl-yd/
-when: 1542581083.64606
+when: 1542747554.83535
+asMultiple: FALSE
+asStatic: FALSE

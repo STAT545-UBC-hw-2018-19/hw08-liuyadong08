@@ -3,8 +3,6 @@ library(ggplot2)
 library(dplyr)
 library(DT)
 library(rsconnect)
-library(shinyjs)
-library(colourpicker)
 
 bcl <- read.csv("bcl-data.csv", stringsAsFactors = FALSE)
 
@@ -18,7 +16,7 @@ ui <- fluidPage(
                   selected = c("WINE", "BEER")),
       selectInput("countryInput", "Country",
                   sort(unique(bcl$Country)),
-                  selected = "FRANCE"),
+                  selected = "CANADA"),
       checkboxInput("checkbox", "Sort by price or not",
                    value = TRUE),
       br(),
@@ -59,7 +57,7 @@ server <- function(input, output) {
       return()
     }
     ggplot(filtered(), aes(x = Alcohol_Content, fill = Type)) +
-      geom_histogram() 
+      geom_histogram(alpha = 0.7) 
   })
 
   output$results <- renderDataTable({
